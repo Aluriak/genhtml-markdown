@@ -61,6 +61,7 @@ For instance, with the parameter `-c config.json` added to `python -m markdown` 
 	}
 }
 ```
+
 Indicating that genhtml will also look in the `alt-headers/` directory for headers.
 Options can also be set when calling [markdown module programatically](https://python-markdown.github.io/extensions/api/#configsettings) with something like `markdown.Markdown(extensions=[GenHTMLMarkdownExtension(headers_dir='~/my-headers-dir'])`.
 
