@@ -1,4 +1,3 @@
-*.html
 .cache/
 .pytest_cache/
 Session.vim

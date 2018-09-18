@@ -5,6 +5,8 @@ Direct applications includes [charts and other plots](https://plot.ly/python/) i
 
     pip install genhtml-markdown
 
+See the [compiled examples and their sources](examples/) for an introductory tour, the [Makefile](Makefile) for the process, or look at next section:
+
 
 ## Basic example with plotly
 Let's take an [offline scatter plot example](https://plot.ly/python/getting-started/#initialization-for-offline-plotting), modified to print the generated HTML :

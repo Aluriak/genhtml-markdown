@@ -1,17 +1,17 @@
 
 
-genhtml: html show
-altgen: runaltgen show
-plot: runplot show
+all: make-examples show-all
 
-runplot:
-	python -m markdown -x plot -f out/out.html examples/simple-scatter.mkd
-html:
-	python -m markdown -x genhtml -f out/out.html examples/arbitrary-python.mkd
-runaltgen:
-	python -m markdown -x genhtml -c alt-headers/config.json -f out/out.html examples/arbitrary-python.mkd
-show:
-	firefox out/out.html
+make-examples:  scatter arbitrary
+scatter:
+	python -m markdown -x genhtml -f examples/simple-scatter.html examples/simple-scatter.mkd
+arbitrary:
+	python -m markdown -x genhtml -f examples/arbitrary-python.html examples/arbitrary-python.mkd
+arbitrary-alt:
+	python -m markdown -x genhtml -c alt-headers/config.json -f examples//arbitrary-python.html examples/arbitrary-python.mkd
+
+show-all:
+	firefox examples/*.html
 
 
 
