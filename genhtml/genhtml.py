@@ -27,15 +27,15 @@ import os
 import io
 import re
 import glob
+import logging
 import textwrap
 import traceback
 import contextlib
-import logging
+import pkg_resources
 import markdown
 from markdown.util import etree, AtomicString
 
 
-__version__ = '1.0.5.dev0'
 FALSY_VALUES = {'0', 'no', 'false', 'f'}
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -129,8 +129,10 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
 
     def build_configs(self):
         "Load default and custom headers/footers in memory"
-        self.header = dict(gen_headfoots_from_dir('headers'))
-        self.footer = dict(gen_headfoots_from_dir('footers'))
+        header_libdir = pkg_resources.resource_filename('genhtml', 'headers/')
+        footer_libdir = pkg_resources.resource_filename('genhtml', 'footers/')
+        self.header = dict(gen_headfoots_from_dir(header_libdir))
+        self.footer = dict(gen_headfoots_from_dir(footer_libdir))
         if self.config.get('headers_dir'):
             logger.info(f"Load custom headers in {self.config['headers_dir']}")
             self.header.update(dict(gen_headfoots_from_dir(self.config['headers_dir'])))
