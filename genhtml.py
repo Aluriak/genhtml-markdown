@@ -28,6 +28,7 @@ import io
 import re
 import glob
 import textwrap
+import traceback
 import contextlib
 import logging
 import markdown
@@ -37,7 +38,7 @@ from markdown.util import etree, AtomicString
 __version__ = '1.0.2.dev0'
 FALSY_VALUES = {'0', 'no', 'false', 'f'}
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.WARNING)
+logger.setLevel(logging.INFO)
 
 
 def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
@@ -52,7 +53,7 @@ def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
                 break
         yield from it
 
-    for headerfile in glob.glob(f'{directory}/*.py'):
+    for headerfile in glob.glob(os.path.join(directory, '*.py')):
         header_name = os.path.splitext(os.path.basename(headerfile))[0]
         with open(headerfile) as fd:
             header_lines = ''.join((filter_first_comments(fd)))
@@ -60,7 +61,7 @@ def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
 
 
 # For details see https://pythonhosted.org/Markdown/extensions/api.html#blockparser
-class PlotPreprocessor(markdown.preprocessors.Preprocessor):
+class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
     # Regular expression inspired from fenced_code
     BLOCK_RE = re.compile(r'''
         ^::genhtml:: (?P<args>[=\w'" -]*)\s*\n
@@ -99,12 +100,12 @@ class PlotPreprocessor(markdown.preprocessors.Preprocessor):
             else:
                 logger.warning(f"Unrecognized option '{key}' with value '{value}'")
 
-        raw_code =  self.generate_python_code(m.group('code'), header.split(','), footer.split(','))
+        raw_code = self.generate_python_code(m.group('code'), header.split(','), footer.split(','))
         if interpret:
             raw_html = self.generate_html(raw_code)
             return text[:m.start()] + raw_html + text[m.end():], True
-        elif not interpret:  # just show python code
-            return text[:m.start()] + textwrap.indent(raw_code, ' '*4) + text[m.end():], False
+        else:  # just show python code
+            return text[:m.start()] + textwrap.indent(raw_code, ' '*4) + text[m.end():], True
 
 
     def generate_html(self, python_code:str) -> str:
@@ -112,8 +113,10 @@ class PlotPreprocessor(markdown.preprocessors.Preprocessor):
         with contextlib.redirect_stdout(fd):
             try:
                 exec(python_code, {}, {})
-            except Exception as e:
-                return '<b>' + str(e) + '</b>'
+            except Exception as err:
+                tb = traceback.format_exc()
+                logger.warning(f"{type(err).__name__} raised by python code. Will be printed in output:\n{tb}")
+                return textwrap.indent(tb, ' '*4)
         return fd.getvalue()
 
     def generate_python_code(self, python_code:str, headers:[str], footers:[str]) -> str:
@@ -128,33 +131,34 @@ class PlotPreprocessor(markdown.preprocessors.Preprocessor):
         "Load default and custom headers/footers in memory"
         self.header = dict(gen_headfoots_from_dir('headers'))
         self.footer = dict(gen_headfoots_from_dir('footers'))
-        if 'headers_dir' in self.config:
+        if self.config.get('headers_dir'):
+            logger.info(f"Load custom headers in {self.config['headers_dir']}")
             self.header.update(dict(gen_headfoots_from_dir(self.config['headers_dir'])))
-        if 'footers_dir' in self.config:
+        if self.config.get('footers_dir'):
+            logger.info(f"Load custom footers in {self.config['footers_dir']}")
             self.footer.update(dict(gen_headfoots_from_dir(self.config['footers_dir'])))
         self.header[''] = self.header['default']
-        self.footer[''] = self.footer['default'] = ''
+        self.footer[''] = self.footer['default']
         self.header['none'] = ''
         self.footer['none'] = ''
 
 
 # For details see https://pythonhosted.org/Markdown/extensions/api.html#extendmarkdown
-class PlotMarkdownExtension(markdown.Extension):
+class GenHTMLMarkdownExtension(markdown.Extension):
     # For details see https://pythonhosted.org/Markdown/extensions/api.html#configsettings
     def __init__(self, *args, **kwargs):
         self.config = {
-            'headers_dir': [None, "Directory containing custom python headers."],
-            'footers_dir': [None, "Directory containing custom python footers."],
+            'headers_dir': ['', "Directory containing custom python headers."],
+            'footers_dir': ['', "Directory containing custom python footers."],
         }
         super().__init__(*args, **kwargs)
 
     def extendMarkdown(self, md, md_globals):
-        blockprocessor = PlotPreprocessor(md)
+        blockprocessor = GenHTMLPreprocessor(md)
         blockprocessor.config = self.getConfigs()
         blockprocessor.build_configs()
-        # need to go before both fenced_code_block and things like retext's PosMapMarkPreprocessor
         md.preprocessors.add('genhtml', blockprocessor, '_begin')
 
 
 def makeExtension(*args, **kwargs):
-    return PlotMarkdownExtension(*args, **kwargs)
+    return GenHTMLMarkdownExtension(*args, **kwargs)

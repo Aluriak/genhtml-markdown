@@ -50,9 +50,21 @@ Imports and offline plotting boilerplate code will be added by headers/footers, 
 ## Features
 
 ### Ready-to-use headers and footers
-You can see the full list of [headers](headers/) and [footers](footers/) in their respective directories. You can also pass some parameters for the extensions in order to provide your own !
+You can see the full list of [headers](headers/) and [footers](footers/) in their respective directories. You can also pass `headers_dir` and `footers_dir` [parameters for the extensions](https://python-markdown.github.io/cli/#using-extensions) in order to provide your own !
 
-Note that the [default header](headers/default.py) provides a lot of imports.
+For instance, with the parameter `-c config.json` added to `python -m markdown` call, you can feed markdown with the following parameters:
+
+```json
+{
+	"genhtml": {
+		"headers_dir": "alt-headers"
+	}
+}
+```
+Indicating that genhtml will also look in the `alt-headers/` directory for headers.
+Options can also be set when calling [markdown module programatically](https://python-markdown.github.io/extensions/api/#configsettings) with something like `markdown.Markdown(extensions=[GenHTMLMarkdownExtension(headers_dir='~/my-headers-dir'])`.
+
+Finally, note that the [default header](headers/default.py) provides a lot of imports.
 
 ### Show sources, and other code manipulations
 See the related [example](examples/arbitrary-python.mkd).
