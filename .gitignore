@@ -3,6 +3,7 @@
 .pytest_cache/
 Session.vim
 __pycache__/
+build/
 debug/
 dist/
 genhtml_markdown.egg-info/
