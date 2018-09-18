@@ -1,36 +1,62 @@
-# plot-markdown
-[Python-Markdown](http://pythonhosted.org/Markdown/) plugin to include easily [charts and other plots](https://plot.ly/python/) in markdown documents.
+# genhtml-markdown
+[Python-Markdown](http://pythonhosted.org/Markdown/) plugin allowing to build HTML from inline python source.
+
+Direct applications includes [charts and other plots](https://plot.ly/python/) in markdown documents, and tooling for [blogging](https://blog.getpelican.com/).
 
 
-## Basic example
-Let's take the [offline scatter plot example](https://plot.ly/python/getting-started/#initialization-for-offline-plotting) :
+## Basic example with plotly
+Let's take an [offline scatter plot example](https://plot.ly/python/getting-started/#initialization-for-offline-plotting), modified to print the generated HTML :
 
 ```python
 import plotly.offline
 import plotly.graph_objs as go
 
-plotly.offline.iplot({
-    "data": [go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])],
-    "layout": go.Layout(title="hello world")
-})
-```
-
-You could want to include it in your article. With pelican-plotly, it's easy
-
-```markdown
-::plot::
 data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
 layout = go.Layout(title="hello world")
-::end-plot::
+
+figure = go.Figure(data=[data], layout=layout)
+print(offline.plot(figure, output_type='div'))
 ```
 
-Imports and offline plotting boilerplate code will be added, ran,
-and finally the output will be included in place as an interactive plot/chart.
+You could want to include it in your article. With genhtml-markdown extension, it's easy:
 
+```markdown
+::genhtml::
+import plotly.offline
+import plotly.graph_objs as go
+
+data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+layout = go.Layout(title="hello world")
+
+figure = go.Figure(data=[data], layout=layout)
+print(offline.plot(figure, output_type='div'))
+::end-genhtml::
+```
+
+You think it's verbose ? I do too. That's the reason we have *headers* and *footers*, patches of python that will be put respectively *before* and *after* our specific code. By default, the header is full of imports, including the plotly ones. And the two last lines are provided by the *plot* footer. So, here is our final code:
+
+```markdown
+::genhtml:: footer=plot
+data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+layout = go.Layout(title="hello world")
+::end-genhtml::
+```
+
+Imports and offline plotting boilerplate code will be added by headers/footers, the total code will be ran, and finally the output will be included in place as an interactive plot/chart.
 
 
 ## Features
 
+### Ready-to-use headers and footers
+You can see the full list of [headers](headers/) and [footers](footers/) in their respective directories. You can also pass some parameters for the extensions in order to provide your own !
+
+Note that the [default header](headers/default.py) provides a lot of imports.
+
+### Show sources, and other code manipulations
+See the related [example](examples/arbitrary-python.mkd).
+
+
+## Incoming features
 ### Use static data
 You have in plot code access to documents static directory. Example:
 
@@ -42,11 +68,7 @@ layout = go.Layout(title="hello world")
 ::end-plot::
 ```
 
-### Imports
-The following imports are operated in `default` config:
 
-```python
-import plotly.offline
-import plotly.graph_objs as go
-import pandas as pd
-```
+## TODO
+- png and svg support for plot
+- use static data: code, doc and examples

@@ -1,0 +1,45 @@
+# This is an example of genhtml-markdown usage
+Look at the following bold statement:
+
+::genhtml::
+print('<b> I'm bold  ! </b>')
+::end-genhtml::
+
+You should know that i didn't wrote it as-is. I wrote it with python, with the following markdown syntax:
+
+	::genhtml::
+	print('<b> I'm bold  ! </b>')
+	::end-genhtml::
+
+You have access to the whole language, of course:
+
+::genhtml::
+	print('-'.join(map(str, range(2, 43, 2))))
+::end-genhtml::
+
+
+And, also, to installed packages !
+
+::genhtml:: footer=plot
+data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+layout = go.Layout(title="hello world")
+::end-genhtml::
+
+This last view was generated with the following code, where some boilerplate code for plotting was added at the end (*footer*):
+
+	::genhtml:: footer=plot
+	data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+	layout = go.Layout(title="hello world")
+	::end-genhtml::
+
+Note that many imports are done by default.
+We can see that by using the `interpret=false` parameter, allowing us to get the full code instead of its interpretation:
+
+::genhtml:: footer=plot interpret=false
+data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+layout = go.Layout(title="hello world")
+::end-genhtml::
+
+Now, you can [install genhtml-markdown](), [define your own headers and footers](), and take over the world !
+
+What a time to be alive !

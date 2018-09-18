@@ -1,14 +1,12 @@
 
 
-all: run show
-test: run run_test
+genhtml: html show
+plot: runplot show
 
-
-run:
+runplot:
 	python -m markdown -x plot -f out/out.html examples/simple-scatter.mkd
+html:
+	python -m markdown -x genhtml -f out/out.html examples/arbitrary-python.mkd
 show:
-	xdg-open out/out.html
-run_test:
-	echo "RESULTS"
-	wc out.html
+	firefox out/out.html
 
