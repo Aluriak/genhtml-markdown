@@ -34,7 +34,7 @@ import markdown
 from markdown.util import etree, AtomicString
 
 
-__version__ = '1.0.1'
+__version__ = '1.0.2.dev0'
 FALSY_VALUES = {'0', 'no', 'false', 'f'}
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.WARNING)
