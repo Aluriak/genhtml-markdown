@@ -1,0 +1,52 @@
+# plot-markdown
+[Python-Markdown](http://pythonhosted.org/Markdown/) plugin to include easily [charts and other plots](https://plot.ly/python/) in markdown documents.
+
+
+## Basic example
+Let's take the [offline scatter plot example](https://plot.ly/python/getting-started/#initialization-for-offline-plotting) :
+
+```python
+import plotly.offline
+import plotly.graph_objs as go
+
+plotly.offline.iplot({
+    "data": [go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])],
+    "layout": go.Layout(title="hello world")
+})
+```
+
+You could want to include it in your article. With pelican-plotly, it's easy
+
+```markdown
+::plot::
+data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+layout = go.Layout(title="hello world")
+::end-plot::
+```
+
+Imports and offline plotting boilerplate code will be added, ran,
+and finally the output will be included in place as an interactive plot/chart.
+
+
+
+## Features
+
+### Use static data
+You have in plot code access to documents static directory. Example:
+
+```markdown
+::plot::
+???
+data = go.Scatter(???)
+layout = go.Layout(title="hello world")
+::end-plot::
+```
+
+### Imports
+The following imports are operated in `default` config:
+
+```python
+import plotly.offline
+import plotly.graph_objs as go
+import pandas as pd
+```

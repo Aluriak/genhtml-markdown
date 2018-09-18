@@ -1,0 +1,9 @@
+*.html
+.cache/
+.pytest_cache/
+Session.vim
+__pycache__/
+debug/
+dist/
+plot-markdown.egg-info/
+venv/

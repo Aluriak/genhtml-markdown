@@ -1,0 +1,2 @@
+Markdown==2.6.11
+plotly==3.2.1
