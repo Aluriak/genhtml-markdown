@@ -1,10 +1,10 @@
+exclude *.mkd
+exclude Makefile
+exclude plot.py
+include README.mkd
 include genhtml.py
+include requirements.txt
+prune alt-headers
+prune examples
 recursive-include footers *.py
 recursive-include headers *.py
-include README.mkd
-include requirements.txt
-exclude Makefile
-exclude *.mkd
-exclude *.py
-prune examples
-prune alt-headers
