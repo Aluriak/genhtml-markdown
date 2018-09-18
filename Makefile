@@ -10,3 +10,8 @@ html:
 show:
 	firefox out/out.html
 
+
+
+release:
+	- rm -r genhtml_markdown.egg-info __pycache__
+	fullrelease

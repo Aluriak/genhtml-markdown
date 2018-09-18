@@ -1,0 +1,9 @@
+include genhtml.py
+recursive-include footers *.py
+recursive-include headers *.py
+include README.mkd
+include requirements.txt
+exclude Makefile
+exclude *.mkd
+exclude *.py
+prune examples
