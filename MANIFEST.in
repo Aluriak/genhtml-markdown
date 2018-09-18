@@ -7,3 +7,4 @@ exclude Makefile
 exclude *.mkd
 exclude *.py
 prune examples
+prune alt-headers
