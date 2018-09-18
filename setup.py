@@ -8,4 +8,5 @@ with open(path.join(here, 'requirements.txt')) as fd:
 
 setup(
     install_requires=install_requirements,
+    py_modules=['genhtml'],
 )
