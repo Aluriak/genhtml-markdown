@@ -1,0 +1,5 @@
+{
+	"genhtml": {
+		"headers_dir": "alt-headers"
+	}
+}
