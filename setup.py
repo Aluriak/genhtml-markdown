@@ -6,6 +6,6 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'requirements.txt')) as fd:
     install_requirements = fd.read().splitlines()
 
-setuptools.setup(
+setup(
     install_requires=install_requirements,
 )

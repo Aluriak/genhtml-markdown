@@ -5,5 +5,5 @@ Session.vim
 __pycache__/
 debug/
 dist/
-plot-markdown.egg-info/
+genhtml_markdown.egg-info/
 venv/

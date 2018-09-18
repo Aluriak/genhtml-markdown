@@ -27,10 +27,8 @@ import os
 import io
 import re
 import glob
-import base64
 import textwrap
 import contextlib
-from subprocess import Popen, PIPE
 import logging
 import markdown
 from markdown.util import etree, AtomicString

@@ -20,7 +20,7 @@
             layout = go.Layout(title="hello world")
         ::end-plot::
 
-    Options are optional, but if present must be specified in the order format, classes, alt.
+    Options are optional, but if present must be specified in the order format, alt.
     The option value may be enclosed in single or double quotes.
 
     Installation
@@ -63,15 +63,15 @@ class PlotPreprocessor(markdown.preprocessors.Preprocessor):
         ::end-plot::[ ]*$
         ''', re.MULTILINE | re.DOTALL | re.VERBOSE)
 
-    FENCED_BLOCK_RE = re.compile(r'''
-        (?P<fence>^(?:~{3,}|`{3,}))[ ]*         # Opening ``` or ~~~
-        (\{?\.?plot)[ ]*                 # Optional {, and lang
-        ''' + args_reg + '''
-        [ ]*
-        }?[ ]*\n                                # Optional closing }
-        (?P<code>.*?)(?<=\n)
-        (?P=fence)[ ]*$
-        ''', re.MULTILINE | re.DOTALL | re.VERBOSE)
+    # FENCED_BLOCK_RE = re.compile(r'''
+        # (?P<fence>^(?:~{3,}|`{3,}))[ ]*         # Opening ``` or ~~~
+        # (\{?\.?plot)[ ]*                 # Optional {, and lang
+        # ''' + args_reg + '''
+        # [ ]*
+        # }?[ ]*\n                                # Optional closing }
+        # (?P<code>.*?)(?<=\n)
+        # (?P=fence)[ ]*$
+        # ''', re.MULTILINE | re.DOTALL | re.VERBOSE)
 
     def __init__(self, md):
         super().__init__(md)
@@ -88,11 +88,11 @@ class PlotPreprocessor(markdown.preprocessors.Preprocessor):
 
     def _replace_block(self, text):
         # Parse configuration params
-        m = self.FENCED_BLOCK_RE.search(text)
+        # m = self.FENCED_BLOCK_RE.search(text)
+        # if not m:
+        m = self.BLOCK_RE.search(text)
         if not m:
-            m = self.BLOCK_RE.search(text)
-            if not m:
-                return text, False
+            return text, False
 
         # Parse configuration params
         img_format = m.group('format') if m.group('format') else self.config['format']

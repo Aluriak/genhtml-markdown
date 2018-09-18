@@ -3,6 +3,8 @@
 
 Direct applications includes [charts and other plots](https://plot.ly/python/) in markdown documents, and tooling for [blogging](https://blog.getpelican.com/).
 
+    pip install genhtml-markdown
+
 
 ## Basic example with plotly
 Let's take an [offline scatter plot example](https://plot.ly/python/getting-started/#initialization-for-offline-plotting), modified to print the generated HTML :
