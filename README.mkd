@@ -72,6 +72,9 @@ Finally, note that the [default header](headers/default.py) provides a lot of im
 ### Show sources, and other code manipulations
 See the related [example](examples/arbitrary-python.mkd).
 
+### Nested code generation
+Is fully supported. See [pyception example](examples/pyception.mkd).
+
 
 ## Incoming features
 ### Use static data
