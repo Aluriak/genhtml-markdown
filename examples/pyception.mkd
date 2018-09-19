@@ -1,0 +1,19 @@
+Note that, interestingly, you can write a python code that
+write a python code that write markdown that contains
+a python code that make html.
+
+::genhtml::
+from textwrap import dedent
+print(dedent("""
+	::genhtml::
+	from textwrap import dedent
+	print(dedent('''
+		::genhtml::
+		print("<b> I'm bold ! </b>")
+		::end-genhtml::
+	'''))
+	::end-genhtml::
+"""))
+::end-genhtml::
+
+There is probably something to do with that.

@@ -1,15 +1,21 @@
+CASE=arbitrary-python
+OPTIONS=
 
 
 all: make-examples show-all
 
-make-examples:  scatter arbitrary
+make-examples:  scatter arbitrary pyception
 scatter:
-	python -m markdown -x genhtml -f examples/simple-scatter.html examples/simple-scatter.mkd
+	$(MAKE) example CASE=simple-scatter
 arbitrary:
-	python -m markdown -x genhtml -f examples/arbitrary-python.html examples/arbitrary-python.mkd
+	$(MAKE) example CASE=arbitrary-python
 arbitrary-alt:
-	python -m markdown -x genhtml -c alt-headers/config.json -f examples//arbitrary-python.html examples/arbitrary-python.mkd
+	$(MAKE) example CASE=arbitrary-python OPTIONS="-c alt-headers/config.json"
+pyception:
+	$(MAKE) example CASE=pyception
 
+example:
+	python -m markdown -x genhtml $(OPTIONS) -f examples/$(CASE).html examples/$(CASE).mkd
 show-all:
 	firefox examples/*.html
 
