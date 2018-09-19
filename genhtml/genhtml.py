@@ -51,7 +51,7 @@ logger.setLevel(logging.INFO)
 
 def raw_to_b64image(raw:str, alt:str='', title:str='', format:str='png') -> str:
     "Return given raw data (understood as base64-encoded png) as an HTML-ready png image"
-    data = f'data:image/{format};base64,{raw}'
+    data = f'data:image/{format};base64,{raw.strip()}'
     alt = f' alt="{alt}"' if alt else ''
     title = f' title="{title}"' if title else ''
     return f'<img src="{data}"{alt}{title} />'
