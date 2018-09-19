@@ -4,7 +4,7 @@ OPTIONS=
 
 all: make-examples show-all
 
-make-examples:  scatter arbitrary pyception
+make-examples:  scatter arbitrary pyception images dot
 scatter:
 	$(MAKE) example CASE=simple-scatter
 arbitrary:
@@ -15,11 +15,15 @@ pyception:
 	$(MAKE) example CASE=pyception
 images:
 	$(MAKE) example CASE=images
+networkx_and_dot:
+	$(MAKE) example CASE=networkx_and_dot
 
 example:
 	python -m markdown -x genhtml $(OPTIONS) -f examples/$(CASE).html examples/$(CASE).mkd
 show-all:
-	firefox examples/*.html
+	firefox ./examples/*.html
+show:
+	firefox ./examples/$(CASE).html
 
 
 

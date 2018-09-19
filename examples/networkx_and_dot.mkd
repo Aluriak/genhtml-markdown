@@ -1,0 +1,59 @@
+This will be quite long because of the steps involved:
+
+- first, we build a graph with [networkx]()
+- then, with [pyplot](), we write the dot representing the graph
+- then, we call [dot/graphviz]() to get the resulting png image
+- then, we print the image in base64
+
+This gives us the following code:
+
+	::genhtml:: format=png
+	# build the graph
+	import networkx as nx
+	from networkx.drawing.nx_pydot import write_dot
+	graph = nx.fast_gnp_random_graph(10, 0.4)
+
+	# get the dot
+	import io
+	import base64
+	with io.StringIO() as output:
+		write_dot(graph, output)
+		dot = output.getvalue()
+
+	# get the png in base64
+	import subprocess
+	proc = subprocess.Popen(['dot', '-Tpng'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+	stdout, stderr = proc.communicate(dot.encode())
+	import base64
+	print(base64.b64encode(stdout).decode())
+	::end-genhtml::
+
+Which will yield the following image:
+
+::genhtml:: format=png
+# build the graph
+import networkx as nx
+from networkx.drawing.nx_pydot import write_dot
+graph = nx.fast_gnp_random_graph(10, 0.4)
+
+# get the dot
+import io
+import base64
+with io.StringIO() as output:
+    write_dot(graph, output)
+    dot = output.getvalue()
+
+# get the png in base64
+import subprocess
+proc = subprocess.Popen(['dot', '-Tpng'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+stdout, stderr = proc.communicate(dot.encode())
+import base64
+print(base64.b64encode(stdout).decode())
+::end-genhtml::
+
+Because life is short, a *dot-png* footer reproduce the last two steps, and the default header already imports networkx ;
+all you need is therefore to define the networkx graph:
+
+	::genhtml:: format=png footer=dot-png
+	graph = nx.fast_gnp_random_graph(10, 0.5)
+	::end-genhtml::

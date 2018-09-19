@@ -92,6 +92,18 @@ with io.BytesIO() as output:
 Other formats are `jpg` and `svg`, allowing you to [bring gizeh to your markdown](https://github.com/Zulko/gizeh).
 
 
+### Graphs
+Using the previous feature, it becomes possible to draw graphs from their networkx definition, as shown in [the related example](examples/networkx_and_dot.mkd).
+
+Using the *dot-png* footer, you can just build your graph and print it in no time:
+
+    ::genhtml:: format=png footer=dot-png
+    graph = nx.fast_gnp_random_graph(10, 0.5)
+    # draw the first one in beige
+    graph.nodes[1]['style'] = 'filled'
+    graph.nodes[1]['fillcolor'] = 'beige'
+    ::end-genhtml::
+
 ### Show sources, and other code manipulations
 See the related [example](examples/arbitrary-python.mkd).
 
