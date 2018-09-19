@@ -15,6 +15,12 @@
 
     Header and footer are name of pre-configured set of imports and exports to do.
 
+    Options:
+
+        header -- header to use. You can combine with comma
+        footer -- footer to use. You can combine with comma
+        interpret -- if set to false, will show the code instead of its results
+
     Installation
     ------------
     `pip install genhtml-markdown`.
