@@ -33,12 +33,14 @@ import os
 import io
 import re
 import glob
+import base64
 import logging
 import textwrap
 import traceback
 import contextlib
 import pkg_resources
 import markdown
+from functools import partial
 from markdown.util import etree, AtomicString
 
 
@@ -46,6 +48,20 @@ FALSY_VALUES = {'0', 'no', 'false', 'f'}
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
+
+def raw_to_b64image(raw:str, alt:str='', title:str='', format:str='png') -> str:
+    "Return given raw data (understood as base64-encoded png) as an HTML-ready png image"
+    data = f'data:image/{format};base64,{raw}'
+    alt = f' alt="{alt}"' if alt else ''
+    title = f' title="{title}"' if title else ''
+    return f'<img src="{data}"{alt}{title} />'
+
+DATA_FORMATS = {
+    'png': partial(raw_to_b64image, format='png'),
+    'jpg': partial(raw_to_b64image, format='jpg'),
+    'svg': partial(raw_to_b64image, format='svg+xml'),
+    'html': lambda d, a, t: d,
+}
 
 def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
     """Yield pairs (name, lines) of headers/footers found in given directory"""
@@ -95,7 +111,7 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
 
         # Parse arguments
         ARG_RE = re.compile(r'''(?P<field>[\w-]+)=(?P<quote>"|'|)(?P<value>[a-zA-Z0-9,]+)(?P=quote)''')
-        header, footer, interpret = '', '', True
+        header, footer, interpret, dataformat, alt, title = '', '', True, 'html', '', ''
         for key, _, value in ARG_RE.findall(m.group('args')):
             if key == 'header':
                 header = value.strip().strip('"\'')
@@ -103,18 +119,27 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
                 footer = value.strip().strip('"\'')
             elif key == 'interpret':
                 interpret = value.lower() not in FALSY_VALUES
+            elif key == 'format':
+                dataformat = value.lower()
+                if dataformat not in DATA_FORMATS:
+                    logger.warning(f"Unrecognized format '{dataformat}'. 'html' will be used instead")
+                    dataformat = 'html'
+            elif key == 'alt':
+                alt = value.strip('\'"')
+            elif key == 'title':
+                title = value.strip('\'"')
             else:
                 logger.warning(f"Unrecognized option '{key}' with value '{value}'")
 
         raw_code = self.generate_python_code(m.group('code'), header.split(','), footer.split(','))
         if interpret:
-            raw_html = self.generate_html(raw_code)
+            raw_html = self.generate_html(raw_code, dataformat, alt, title)
             return text[:m.start()] + raw_html + text[m.end():], True
         else:  # just show python code
             return text[:m.start()] + textwrap.indent(raw_code, ' '*4) + text[m.end():], True
 
 
-    def generate_html(self, python_code:str) -> str:
+    def generate_html(self, python_code:str, format:str, alt:str, title:str) -> str:
         fd = io.StringIO()
         with contextlib.redirect_stdout(fd):
             try:
@@ -123,7 +148,7 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
                 tb = traceback.format_exc()
                 logger.warning(f"{type(err).__name__} raised by python code. Will be printed in output:\n{tb}")
                 return textwrap.indent(tb, ' '*4)
-        return fd.getvalue()
+        return DATA_FORMATS[format](fd.getvalue(), alt, title)
 
     def generate_python_code(self, python_code:str, headers:[str], footers:[str]) -> str:
         return '\n'.join((

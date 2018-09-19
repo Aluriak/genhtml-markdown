@@ -13,6 +13,8 @@ arbitrary-alt:
 	$(MAKE) example CASE=arbitrary-python OPTIONS="-c alt-headers/config.json"
 pyception:
 	$(MAKE) example CASE=pyception
+images:
+	$(MAKE) example CASE=images
 
 example:
 	python -m markdown -x genhtml $(OPTIONS) -f examples/$(CASE).html examples/$(CASE).mkd

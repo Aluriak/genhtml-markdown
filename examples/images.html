@@ -1,0 +1,24 @@
+<p>Let's use pillow to build an image as shown <a href="https://stackoverflow.com/a/38550423">in this stack</a>.
+With this markdown code:</p>
+<pre><code>::genhtml:: format=png
+from PIL import Image
+
+image = Image.new('RGB', (60, 30), color='red')
+
+import io
+import base64
+with io.BytesIO() as output:
+    image.save(output, format='png')
+    print(base64.b64encode(output.getvalue()).decode(), end='')
+::end-genhtml::
+</code></pre>
+<p>We get:</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAeCAIAAAD/+uoYAAAAO0lEQVR4nO3OwQ0AEAAAMey/Mzt4VCTXCTr3+M96HbhRWimtlFZKK6WV0kpppbRSWimtlFZKK6WV0soBsq4BO2SEu+wAAAAASUVORK5CYII=" /></p>
+<p>Note that it can also be done in only two lines with the <code>png-image</code> footer:</p>
+<pre><code>::genhtml:: format=png footer=png-image
+from PIL import Image
+image = Image.new('RGB', (60, 30), color='green')
+::end-genhtml::
+</code></pre>
+<p>Giving us:</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAAeCAIAAAD/+uoYAAAAO0lEQVR4nO3OwQ0AEAAAMUxudDt4nEjaCTrHHt9ZrwM3pCvSFemKdEW6Il2RrkhXpCvSFemKdEW6Il05LE0AvJZo9ZkAAAAASUVORK5CYII=" /></p>

@@ -69,6 +69,29 @@ Options can also be set when calling [markdown module programatically](https://p
 
 Finally, note that the [default header](headers/default.py) provides a lot of imports.
 
+### Generate and show raw images
+As shown in [images example](examples/images.mkd),
+it is quite easy to build and show an image inline :
+
+    ::genhtml:: format=png footer=png-image
+    from PIL import Image
+    image = Image.new('RGB', (60, 30), color='green')
+    ::end-genhtml::
+
+The `format=png` options tells that the printed data is (base64-encoded) raw png data,
+and the [*png-image* footer](genhtml/footers/png-image.py) reads something like:
+
+```python
+import io
+import base64
+with io.BytesIO() as output:
+    image.save(output, format='png')
+    print(base64.b64encode(output.getvalue()).decode(), end='')
+```
+
+Other formats are `jpg` and `svg`, allowing you to [bring gizeh to your markdown](https://github.com/Zulko/gizeh).
+
+
 ### Show sources, and other code manipulations
 See the related [example](examples/arbitrary-python.mkd).
 
