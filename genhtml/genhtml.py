@@ -110,7 +110,7 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
             return text, False
 
         # Parse arguments
-        ARG_RE = re.compile(r'''(?P<field>[\w-]+)=(?P<quote>"|'|)(?P<value>[a-zA-Z0-9,]+)(?P=quote)''')
+        ARG_RE = re.compile(r'''(?P<field>[\w-]+)=(?P<quote>"|'|)(?P<value>[a-zA-Z0-9,+_-]+)(?P=quote)''')
         header, footer, interpret, dataformat, alt, title = '', '', True, 'html', '', ''
         for key, _, value in ARG_RE.findall(m.group('args')):
             if key == 'header':
