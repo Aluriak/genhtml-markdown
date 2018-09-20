@@ -31,3 +31,7 @@ show:
 release:
 	- rm -r genhtml_markdown.egg-info __pycache__
 	fullrelease
+
+clear: clean
+clean:
+	- rm -r build genhtml_markdown.egg-info
