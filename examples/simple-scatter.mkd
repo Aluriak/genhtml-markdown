@@ -4,9 +4,9 @@
 # Live example
 Text before
 
-::genhtml:: footer=plot
+```genhtml footer=plot
 data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
 layout = go.Layout(title="hello world")
-::end-genhtml::
+```
 
 Text after
