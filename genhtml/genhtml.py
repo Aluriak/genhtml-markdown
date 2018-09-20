@@ -143,7 +143,8 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
         fd = io.StringIO()
         with contextlib.redirect_stdout(fd):
             try:
-                exec(python_code, {}, {})
+                env = {}  # see https://docs.python.org/3/library/functions.html#exec
+                exec(python_code, env, env)
             except Exception as err:
                 tb = traceback.format_exc()
                 logger.warning(f"{type(err).__name__} raised by python code. Will be printed in output:\n{tb}")
