@@ -4,7 +4,8 @@ OPTIONS=
 
 all: make-examples show-all
 
-make-examples:  scatter arbitrary pyception images dot
+examples:  all-examples
+all-examples:  scatter arbitrary pyception images networkx_and_dot
 scatter:
 	$(MAKE) example CASE=simple-scatter
 arbitrary:
