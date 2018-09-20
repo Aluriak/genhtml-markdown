@@ -107,20 +107,23 @@ See the related [example](examples/arbitrary-python.mkd).
 Is fully supported. See [pyception example](examples/pyception.mkd).
 
 
-## Incoming features
 ### Use static data
-You have in plot code access to documents static directory. Example:
+You have in the code access to active directory.
+For instance, if using [pelican](https://blog.getpelican.com/), you can read all your blog articles in few lines:
 
-```markdown
-::plot::
-???
-data = go.Scatter(???)
-layout = go.Layout(title="hello world")
-::end-plot::
-```
+    ```genhtml
+    import glob
+    print('Follows a list of published articles:')
+    for article in glob.glob('content/articles/*.mkd'):
+        if any(line.strip() == 'status: published' for line in open(article)):
+            print(f'- {article}')
+    ```
+
+Following this logic, if you are using recurrent CSV data, you could put it in a dedicated directory,
+and access it easily from all your integrated python code.
 
 
-## TODO
+## Incoming features
 - png and svg support for plot
 - use static data: code, doc and examples
 - headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), in order to allow ASP in markdown (!)
