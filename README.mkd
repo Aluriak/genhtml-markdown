@@ -123,3 +123,4 @@ layout = go.Layout(title="hello world")
 ## TODO
 - png and svg support for plot
 - use static data: code, doc and examples
+- headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), in order to allow ASP in markdown (!)
