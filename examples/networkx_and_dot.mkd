@@ -7,7 +7,7 @@ This will be quite long because of the steps involved:
 
 This gives us the following code:
 
-	::genhtml:: format=png
+	```genhtml format=png
 	# build the graph
 	import networkx as nx
 	from networkx.drawing.nx_pydot import write_dot
@@ -26,11 +26,11 @@ This gives us the following code:
 	stdout, stderr = proc.communicate(dot.encode())
 	import base64
 	print(base64.b64encode(stdout).decode())
-	::end-genhtml::
+	```
 
 Which will yield the following image:
 
-::genhtml:: format=png
+```genhtml format=png
 # build the graph
 import networkx as nx
 from networkx.drawing.nx_pydot import write_dot
@@ -49,11 +49,11 @@ proc = subprocess.Popen(['dot', '-Tpng'], stdin=subprocess.PIPE, stdout=subproce
 stdout, stderr = proc.communicate(dot.encode())
 import base64
 print(base64.b64encode(stdout).decode())
-::end-genhtml::
+```
 
 Because life is short, a *dot-png* footer reproduce the last two steps, and the default header already imports networkx ;
 all you need is therefore to define the networkx graph:
 
-	::genhtml:: format=png footer=dot-png
+	```genhtml format=png footer=dot-png
 	graph = nx.fast_gnp_random_graph(10, 0.5)
-	::end-genhtml::
+	```

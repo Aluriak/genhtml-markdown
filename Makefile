@@ -4,7 +4,8 @@ OPTIONS=
 
 all: make-examples show-all
 
-make-examples:  scatter arbitrary pyception images dot
+examples:  all-examples
+all-examples:  scatter arbitrary pyception images networkx_and_dot
 scatter:
 	$(MAKE) example CASE=simple-scatter
 arbitrary:
@@ -30,3 +31,7 @@ show:
 release:
 	- rm -r genhtml_markdown.egg-info __pycache__
 	fullrelease
+
+clear: clean
+clean:
+	- rm -r build genhtml_markdown.egg-info

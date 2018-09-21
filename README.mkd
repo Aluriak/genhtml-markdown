@@ -24,27 +24,23 @@ print(offline.plot(figure, output_type='div'))
 
 You could want to include it in your article. With genhtml-markdown extension, it's easy:
 
-```markdown
-::genhtml::
-import plotly.offline
-import plotly.graph_objs as go
+    ```genhtml
+    import plotly.offline
+    import plotly.graph_objs as go
 
-data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
-layout = go.Layout(title="hello world")
+    data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+    layout = go.Layout(title="hello world")
 
-figure = go.Figure(data=[data], layout=layout)
-print(offline.plot(figure, output_type='div'))
-::end-genhtml::
-```
+    figure = go.Figure(data=[data], layout=layout)
+    print(offline.plot(figure, output_type='div'))
+    ```
 
 You think it's verbose ? I do too. That's the reason we have *headers* and *footers*, patches of python that will be put respectively *before* and *after* our specific code. By default, the header is full of imports, including the plotly ones. And the two last lines are provided by the *plot* footer. So, here is our final code:
 
-```markdown
-::genhtml:: footer=plot
-data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
-layout = go.Layout(title="hello world")
-::end-genhtml::
-```
+    ```genhtml footer=plot
+    data = go.Scatter(x=[1, 2, 3, 4], y=[4, 3, 2, 1])
+    layout = go.Layout(title="hello world")
+    ```
 
 Imports and offline plotting boilerplate code will be added by headers/footers, the total code will be ran, and finally the output will be included in place as an interactive plot/chart.
 
@@ -73,10 +69,10 @@ Finally, note that the [default header](headers/default.py) provides a lot of im
 As shown in [images example](examples/images.mkd),
 it is quite easy to build and show an image inline :
 
-    ::genhtml:: format=png footer=png-image
+    ```genhtml format=png footer=png-image
     from PIL import Image
     image = Image.new('RGB', (60, 30), color='green')
-    ::end-genhtml::
+    ```
 
 The `format=png` options tells that the printed data is (base64-encoded) raw png data,
 and the [*png-image* footer](genhtml/footers/png-image.py) reads something like:
@@ -97,12 +93,12 @@ Using the previous feature, it becomes possible to draw graphs from their networ
 
 Using the *dot-png* footer, you can just build your graph and print it in no time:
 
-    ::genhtml:: format=png footer=dot-png
+    ```genhtml format=png footer=dot-png
     graph = nx.fast_gnp_random_graph(10, 0.5)
     # draw the first one in beige
     graph.nodes[1]['style'] = 'filled'
     graph.nodes[1]['fillcolor'] = 'beige'
-    ::end-genhtml::
+    ```
 
 ### Show sources, and other code manipulations
 See the related [example](examples/arbitrary-python.mkd).
@@ -111,21 +107,25 @@ See the related [example](examples/arbitrary-python.mkd).
 Is fully supported. See [pyception example](examples/pyception.mkd).
 
 
-## Incoming features
 ### Use static data
-You have in plot code access to documents static directory. Example:
+You have in the code access to active directory.
+For instance, if using [pelican](https://blog.getpelican.com/), you can read all your blog articles in few lines:
 
-```markdown
-::plot::
-???
-data = go.Scatter(???)
-layout = go.Layout(title="hello world")
-::end-plot::
-```
+    ```genhtml
+    import glob
+    print('Follows a list of published articles:')
+    for article in glob.glob('content/articles/*.mkd'):
+        if any(line.strip() == 'status: published' for line in open(article)):
+            print(f'- {article}')
+    ```
+
+Following this logic, if you are using recurrent CSV data, you could put it in a dedicated directory,
+and access it easily from all your integrated python code.
 
 
-## TODO
+## Incoming features
 - png and svg support for plot
 - use static data: code, doc and examples
 - access to all markdown article from python (allowing to access the article itself)
 - access to previous python environments (allowing to reuse variables among blocks ; need a state in the Preprocessor to save previously generated env, and ability to give it to exec if a flag like `reuse-env=true` is set)
+- headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), in order to allow ASP in markdown (!)

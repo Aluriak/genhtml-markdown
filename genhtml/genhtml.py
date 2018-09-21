@@ -9,9 +9,9 @@
 
     Example:
 
-        ::genhtml:: header=none footer=none
+        ```genhtml header=none footer=none
             print('<b> hello ! </b>')
-        ::end-genhtml::
+        ```
 
     Header and footer are name of pre-configured set of imports and exports to do.
 
@@ -86,9 +86,9 @@ def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
 class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
     # Regular expression inspired from fenced_code
     BLOCK_RE = re.compile(r'''
-        ^::genhtml:: (?P<args>[=\w'" -]*)\s*\n
+        ^```gen(html|mark) (?P<args>[=\w'" +,_-]*)\s*\n
         (?P<code>.*?)(?<=\n)
-        ^::end-genhtml::[ ]*$
+        ^```\s*$
         ''', re.MULTILINE | re.DOTALL | re.VERBOSE)
 
     def __init__(self, md):
@@ -143,7 +143,8 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
         fd = io.StringIO()
         with contextlib.redirect_stdout(fd):
             try:
-                exec(python_code, {}, {})
+                env = {}  # see https://docs.python.org/3/library/functions.html#exec
+                exec(python_code, env, env)
             except Exception as err:
                 tb = traceback.format_exc()
                 logger.warning(f"{type(err).__name__} raised by python code. Will be printed in output:\n{tb}")

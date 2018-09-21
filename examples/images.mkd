@@ -1,7 +1,7 @@
 Let's use pillow to build an image as shown [in this stack](https://stackoverflow.com/a/38550423).
 With this markdown code:
 
-	::genhtml:: format=png
+	```genhtml format=png
 	from PIL import Image
 
 	image = Image.new('RGB', (60, 30), color='red')
@@ -11,11 +11,11 @@ With this markdown code:
 	with io.BytesIO() as output:
 		image.save(output, format='png')
 		print(base64.b64encode(output.getvalue()).decode())
-	::end-genhtml::
+	```
 
 We get:
 
-::genhtml:: format=png
+```genhtml format=png
 from PIL import Image
 
 image = Image.new('RGB', (60, 30), color='red')
@@ -25,19 +25,19 @@ import base64
 with io.BytesIO() as output:
     image.save(output, format='png')
     print(base64.b64encode(output.getvalue()).decode())
-::end-genhtml::
+```
 
 
 Note that it can also be done in only two lines with the `png-image` footer:
 
-	::genhtml:: format=png footer=png-image
+	```genhtml format=png footer=png-image
 	from PIL import Image
 	image = Image.new('RGB', (60, 30), color='green')
-	::end-genhtml::
+	```
 
 Giving us:
 
-::genhtml:: format=png footer=png-image
+```genhtml format=png footer=png-image
 from PIL import Image
 image = Image.new('RGB', (60, 30), color='green')
-::end-genhtml::
+```
