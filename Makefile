@@ -2,6 +2,10 @@ CASE=arbitrary-python
 OPTIONS=
 
 
+t: test
+test:
+	python -m pytest . --doctest-module -vv --ignore=venv --ignore=genhtml/headers --ignore=genhtml/footers
+
 all: make-examples show-all
 
 examples:  all-examples
@@ -37,3 +41,6 @@ release:
 clear: clean
 clean:
 	- rm -r build genhtml_markdown.egg-info
+
+
+.PHONY: t test examples
