@@ -122,10 +122,13 @@ For instance, if using [pelican](https://blog.getpelican.com/), you can read all
 Following this logic, if you are using recurrent CSV data, you could put it in a dedicated directory,
 and access it easily from all your integrated python code.
 
+### Global environment
+An environment is shared among codes in the same document.
+As shown in [related example](examples/env-management.mkd), you can access it with the flag `global-env=true`.
+
 
 ## Incoming features
 - png and svg support for plot
 - use static data: code, doc and examples
 - access to all markdown article from python (allowing to access the article itself)
-- access to previous python environments (allowing to reuse variables among blocks ; need a state in the Preprocessor to save previously generated env, and ability to give it to exec if a flag like `reuse-env=true` is set)
 - headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), in order to allow ASP in markdown (!)

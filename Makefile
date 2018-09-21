@@ -5,7 +5,7 @@ OPTIONS=
 all: make-examples show-all
 
 examples:  all-examples
-all-examples:  scatter arbitrary pyception images networkx_and_dot
+all-examples:  scatter arbitrary pyception images networkx_and_dot env-management
 scatter:
 	$(MAKE) example CASE=simple-scatter
 arbitrary:
@@ -18,6 +18,8 @@ images:
 	$(MAKE) example CASE=images
 networkx_and_dot:
 	$(MAKE) example CASE=networkx_and_dot
+env-management:
+	$(MAKE) example CASE=env-management
 
 example:
 	python -m markdown -x genhtml $(OPTIONS) -f examples/$(CASE).html examples/$(CASE).mkd

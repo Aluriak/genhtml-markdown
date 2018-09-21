@@ -1,0 +1,63 @@
+# Example for environment management
+The following parameters will be used:
+
+- *global-env:* set it to true to use the global environment
+- *isolate-env:* set it to true to not modify the global environment
+
+Basically, the global environment is the locals() and globals()
+shared by all python codes. Unless something like `global-env=true` is added
+to options, a python code do not have access to that environment.
+Also, unless something like `isolate-env=true` is added to options,
+the final locals() and globals() of the python code are added to the global env.
+
+## Usage example
+### global-env
+First, consider the following code:
+
+    ```genhtml
+    message = '<b> This is a message </b>'
+    ```
+
+Unless some magic in footers is invoqued with `footer=…`, this code will not
+print anything, and therefore will be converted to nothing.
+However, as explained before, it will change the global environment by adding
+a `message` variable containing a message.
+
+```genhtml
+message = '<b> This is a message </b>'
+```
+
+Let's make a new python code that will (1) have access to the global environment and (2) make use of that variable:
+
+    ```genhtml global-env=true
+    print(message)
+    ```
+
+Which will be converted as:
+
+```genhtml global-env=true
+print(message)
+```
+
+### isolate-env
+Now, let's modify the message in an isolated environment:
+
+    ```genhtml isolated-env=true
+    message = '<i> This is a message </i>'
+    print(message)
+    ```
+
+It will yield, as expected:
+
+```genhtml isolated-env=true
+message = '<i> This is a message </i>'
+print(message)
+```
+
+However, if we call again the *global-env*-enabled code that print the variable message, we get:
+
+```genhtml global-env=true
+print(message)
+```
+
+As if no code modified the message.

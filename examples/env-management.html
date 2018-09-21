@@ -1,0 +1,41 @@
+<h1>Example for environment management</h1>
+<p>The following parameters will be used:</p>
+<ul>
+<li><em>global-env:</em> set it to true to use the global environment</li>
+<li><em>isolate-env:</em> set it to true to not modify the global environment</li>
+</ul>
+<p>Basically, the global environment is the locals() and globals()
+shared by all python codes. Unless something like <code>global-env=true</code> is added
+to options, a python code do not have access to that environment.
+Also, unless something like <code>isolate-env=true</code> is added to options,
+the final locals() and globals() of the python code are added to the global env.</p>
+<h2>Usage example</h2>
+<h3>global-env</h3>
+<p>First, consider the following code:</p>
+<pre><code>```genhtml
+message = '&lt;b&gt; This is a message &lt;/b&gt;'
+```
+</code></pre>
+<p>Unless some magic in footers is invoqued with <code>footer=…</code>, this code will not
+print anything, and therefore will be converted to nothing.
+However, as explained before, it will change the global environment by adding
+a <code>message</code> variable containing a message.</p>
+<p>Let's make a new python code that will (1) have access to the global environment and (2) make use of that variable:</p>
+<pre><code>```genhtml global-env=true
+print(message)
+```
+</code></pre>
+<p>Which will be converted as:</p>
+<p><b> This is a message </b></p>
+<h3>isolate-env</h3>
+<p>Now, let's modify the message in an isolated environment:</p>
+<pre><code>```genhtml isolated-env=true
+message = '&lt;i&gt; This is a message &lt;/i&gt;'
+print(message)
+```
+</code></pre>
+<p>It will yield, as expected:</p>
+<p><i> This is a message </i></p>
+<p>However, if we call again the <em>global-env</em>-enabled code that print the variable message, we get:</p>
+<p><b> This is a message </b></p>
+<p>As if no code modified the message.</p>
