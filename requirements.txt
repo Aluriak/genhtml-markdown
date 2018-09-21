@@ -3,3 +3,5 @@ Pillow==5.2.0
 networkx==2.2
 plotly==3.2.1
 pydot==1.2.4
+pytest==3.8.0
+zest.releaser[recommended]==6.15.2
