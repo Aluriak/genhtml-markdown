@@ -95,7 +95,7 @@ class GenHTMLPreprocessor(markdown.preprocessors.Preprocessor):
     BLOCK_RE = re.compile(r'''
         ^```gen(html|mark) (?P<args>[=\w'" +,_-]*)\s*\n
         (?P<code>.*?)(?<=\n)
-        ^```\s*$
+        ^``` *$
         ''', re.MULTILINE | re.DOTALL | re.VERBOSE)
 
     def __init__(self, md):
