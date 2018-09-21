@@ -3,7 +3,8 @@
 An available example is a .mkd file found in examples/ that also exist as .test.
 .test files are HTML files.
 Since some examples are non-deterministic, it's is not possible to just read the HTML.
-Hence, the presence of a .test file indicate that the example is testable.
+Hence, the presence of a .test file indicate that the example is testable
+and the content provides the expected data.
 
 """
 
