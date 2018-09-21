@@ -127,3 +127,5 @@ layout = go.Layout(title="hello world")
 ## TODO
 - png and svg support for plot
 - use static data: code, doc and examples
+- access to all markdown article from python (allowing to access the article itself)
+- access to previous python environments (allowing to reuse variables among blocks ; need a state in the Preprocessor to save previously generated env, and ability to give it to exec if a flag like `reuse-env=true` is set)
