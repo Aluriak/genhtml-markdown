@@ -10,10 +10,11 @@
     Example:
 
         ```genhtml header=none footer=none
-            print('<b> hello ! </b>')
+        print('<b> hello ! </b>')
         ```
 
-    Header and footer are name of pre-configured set of imports and exports to do.
+    Header and footer are name of pre-configured code
+    that will be added respectively before and after the code.
 
     Options:
 
@@ -22,10 +23,18 @@
         interpret -- if set to false, will show the code instead of its results
         global-env -- if set to true, the python code will use the global environment.
         isolate-env -- if set to true, the python code will not modify the global environment
+        format -- define how to understand the code output. Default is html.
+        alt -- when producing images (see format), define the alt text
+        title -- when producing images (see format), define the title text
 
     The global environment is, at the beginning of the parsing, empty.
     It will be updated by all python codes. As a consequence, you can use
     the global environment to use data computed by scripts before the one you write.
+
+    The format parameter is by default html.
+    Other possible values are png and svg. Note that the python code should not just
+    print raw png/svg data, but must first encode it in base64
+    with the standard module of the same name.
 
     Installation
     ------------
@@ -62,12 +71,16 @@ def raw_to_b64image(raw:str, alt:str='', title:str='', format:str='png') -> str:
     alt = f' alt="{alt}"' if alt else ''
     title = f' title="{title}"' if title else ''
     return f'<img src="{data}"{alt}{title} />'
+def raw_to_raw(raw:str, alt:str='', title:str='', format:str='png') -> str:
+    "Return raw as-is, whatever the other arguments are. Mocking behavior of raw_to_* functions"
+    return raw
 
 DATA_FORMATS = {
     'png': partial(raw_to_b64image, format='png'),
     'jpg': partial(raw_to_b64image, format='jpg'),
     'svg': partial(raw_to_b64image, format='svg+xml'),
-    'html': lambda d, a, t: d,
+    'html': raw_to_raw,
+    'markdown': raw_to_raw,
 }
 
 def gen_headfoots_from_dir(directory:str) -> [(str, str)]:
