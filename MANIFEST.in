@@ -5,4 +5,5 @@ include README.mkd
 include requirements.txt
 prune alt-headers
 prune examples
+prune test
 recursive-include genhtml *.py
