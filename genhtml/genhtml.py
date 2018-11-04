@@ -77,6 +77,7 @@ def raw_to_raw(raw:str, alt:str='', title:str='', format:str='png') -> str:
 
 DATA_FORMATS = {
     'png': partial(raw_to_b64image, format='png'),
+    'gif': partial(raw_to_b64image, format='gif'),
     'jpg': partial(raw_to_b64image, format='jpg'),
     'svg': partial(raw_to_b64image, format='svg+xml'),
     'html': raw_to_raw,

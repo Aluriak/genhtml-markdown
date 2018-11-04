@@ -9,7 +9,7 @@ test:
 all: make-examples show-all
 
 examples:  all-examples
-all-examples:  scatter arbitrary pyception images networkx_and_dot env-management
+all-examples:  scatter arbitrary pyception images networkx_and_dot env-management biseau
 scatter:
 	$(MAKE) example CASE=simple-scatter
 arbitrary:
@@ -24,6 +24,8 @@ networkx_and_dot:
 	$(MAKE) example CASE=networkx_and_dot
 env-management:
 	$(MAKE) example CASE=env-management
+biseau:
+	$(MAKE) example CASE=biseau
 
 example:
 	python -m markdown -x genhtml $(OPTIONS) -f examples/$(CASE).html examples/$(CASE).mkd

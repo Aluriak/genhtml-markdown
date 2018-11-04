@@ -126,8 +126,8 @@ and access it easily from all your integrated python code.
 An environment is shared among codes in the same document.
 As shown in [related example](examples/env-management.mkd), you can access it with the flag `global-env=true`.
 
+## Other features
+- headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), allowing [ASP](https://lucas.bourneuf.net/blog/asp-tuto.html) in markdown to draw graphs.
 
 ## Incoming features
 - access to all markdown article from python (allowing to access the article itself)
-- headers/footers for [biseau](https://gitlab.inria.fr/lbourneu/biseau), in order to allow ASP in markdown (!)
-- [graphs](http://js.cytoscape.org/) and [powergraphs with cytoscape.js](https://github.com/Aluriak/bubble-tools/#conversion-to-cytoscapejs)
